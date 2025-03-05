@@ -1,0 +1,287 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+@font-face {
+    font-family:"logo";
+    src:url('../font/YanShiQiuHongKai-2.ttf')
+}
+
+.Main{
+    font-family:"logo";
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+
+}
+
+.Main input{
+    font-family:"logo";
+}
+
+#MainPage{
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#MainPage,
+#SuggestPage,
+#AddPoems,
+#PoetsList,
+#PoemsList,
+#MyCollections{
+    cursor: pointer;
+    display:inline-block;
+    transition: all 0.3s ease;
+}
+#MainPage:hover,
+#SuggestPage:hover,
+#AddPoems:hover,
+#PoetsList:hover,
+#PoemsList:hover,
+#MyCollections:hover{
+    transform:scale(1.1);
+    background-color:#F9FAFB;
+}
+
+hr{
+    border:none;
+    border-top:2px solid black;
+}
+/*增加诗词*/
+#addPoems-box{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    font-family: "logo";
+    align-items: center;
+    width: 300px;
+    height: 500px;
+    border:2px solid black;
+    border-radius:10px;
+    box-shadow:0px 0px 10px rgba(0,0,0,0.1) ;
+    padding: 30px;
+    margin:auto;
+    margin-top:30px;
+    margin-bottom:90px;
+    background-color:rgba(255, 255, 255, 0.9);
+}
+
+#addPoems-footer{
+    text-align:center;
+    color:rgba(75,75,75,0.5);
+    font-family: "logo";
+
+}
+
+#ci_paiAdd input,
+#titleAdd input,
+#poemsAdd textarea,
+#poetsAdd input,
+#interpretationsAdd textarea{
+    flex:1;
+    padding:5px;
+}
+
+.addPoems-main{
+    margin-bottom:15px;
+    display:flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#poemsAdd textarea{
+    resize:none;
+    height:100px;
+}
+
+#interpretationsAdd textarea{
+    resize: none;
+    height:200px;
+}
+
+#addPoems-button button{
+    background-color:white;
+    border-radius:10px;
+    font-family:"logo";
+    cursor: pointer;
+
+}
+
+#addPoems-button button:hover{
+    background-color:#F7F7F7;
+    transition: 0.3s ease;
+}
+
+/*诗人*/
+#poetsList-footer{
+    text-align:center;
+    color:rgba(75,75,75,0.5);
+    font-family: "logo";
+}
+
+
+#poetsListContainer {
+    padding: 30px;
+    width: 300px;
+    margin: auto;
+    margin-top:30px;
+    margin-bottom:90px;
+}
+
+.group-container {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.group-container h3 {
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    font-size: 18px;
+    margin-bottom: 8px;
+    text-align: left;
+    font-family: "logo";
+}
+
+ul li:hover {
+    color: #007bff;
+    cursor: pointer;
+}
+
+/*词牌列表*/
+#poemsList-footer{
+        text-align:center;
+        color:rgba(75,75,75,0.5);
+        font-family: "logo";
+}
+
+#poemsListContainer{
+    padding: 30px;
+    width: 300px;
+    margin: auto;
+    margin-top:30px;
+    margin-bottom:90px;
+}
+
+/*随机诗词*/
+#suggestPoemsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    position: relative;
+    margin-top: 50px;
+    font-family: "logo";
+    align-items: flex-start;
+    line-height: 1.2;
+}
+
+.suggestPoem-poem {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    width: auto;
+    white-space: nowrap;
+    border:2px solid black;
+    border-radius: 10px;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.suggestPoem-poem:hover {
+    background-color: #F7F7F7;
+    transform: scale(1.1);
+}
+.suggestPoem-author{
+    color:rgba(75,75,75,0.5);
+}
+.suggestPoem-title{
+    color:#19537D;
+}
+
+
+#suggestPage-footer{
+    text-align:center;
+    color:rgba(75,75,75,0.5);
+    font-family: "logo";
+}
+
+#reloadPoems{
+    background-color:white;
+    border-radius:10px;
+    font-family:"logo";
+    cursor: pointer;
+    text-align: center;
+    margin:30px auto 30px auto
+}
+/*主页*/
+#nowWeekdays{
+    text-align:center;
+    font-family: "logo";
+    padding: 10px;
+
+}
+
+/*具体页面*/
+#detailedPoem{
+    font-family:"logo";
+    text-align: left;
+    margin-top:30px;
+    line-height: 2;
+
+}
+
+#detail-title{
+    color:#19537D;
+}
+
+#detail{
+    border:2px solid black;
+    border-radius: 10px;
+    width:auto;
+    padding-left:100px;
+    margin-left:300px;
+    margin-right:300px;
+
+}
+
+#detail-translation{
+    margin-top:30px;
+    text-align:left;
+    border:2px solid black;
+    border-radius:10px;
+    padding-left:100px;
+    line-height: 2;
+    margin-left:300px;
+    margin-right:300px;
+}
+
+/*诗人作品*/
+#poetPoems-container{
+    font-family: "logo";
+    text-align: left;
+    width:auto;
+    padding-left:100px;
+    margin-left:300px;
+    margin-right:300px;
+    margin-top:30px;
+    border:2px solid black;
+    border-radius:10px;
+}

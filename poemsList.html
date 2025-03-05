@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>词牌雅谱</title>
+    <link rel="stylesheet" href="decorate.css">
+    <script src="PinYinOrder.bund.js"></script>
+</head>
+<body>
+<header class="Main">
+    <span id="MainPage">森雨阁</span>
+    <span>
+        <span id="AddPoems">诗韵新录</span>
+        <span id="PoetsList">墨客集萃</span>
+        <span id="PoemsList"  style="background-color:rgba(218,218,218,0.5)">词牌雅谱</span>
+        <span id="SuggestPage">诗海拾贝</span>
+        <span id="MyCollections">藏诗小筑</span>
+        <input type="search" placeholder="查找诗人、诗词、名句...">
+    </span>
+</header>
+<hr>
+
+<div>
+    <main id="poemsListContainer">
+
+    </main>
+</div>
+<hr>
+<footer id="poemsList-footer">
+    <h4>"宫商流觞传古律，平仄裁月铸新声。"</h4>
+</footer>
+
+
+</body>
+<script src="code.js"></script>
+<script>
+    window.onload = function () {
+        const pinyin = new PinYinOrder();
+        fetch("poems.json")
+            .then(response => {
+                if (!response.ok) throw new Error("网络错误：" + response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("加载的词牌数据：", data);
+                const poemsListContainer = document.getElementById("poemsListContainer");
+                const Poems = new Set();
+
+
+                data.forEach(item => {
+                    if (item.ci_pai && item.ci_pai.trim() !== "") {
+                        Poems.add(item.ci_pai.trim());
+                    }
+                });
+                let sortedPoems=Array.from(Poems);
+                pinyin.sort(sortedPoems);
+                const groupedPoems=groupByFirstLetter(sortedPoems,pinyin);
+                for (const letter in groupedPoems) {
+                    const groupContainer = document.createElement("div");
+                    groupContainer.classList.add("group-container");
+
+                    const groupTitle = document.createElement("h3");
+                    groupTitle.textContent = letter;
+                    groupContainer.appendChild(groupTitle);
+
+                    const poemList = document.createElement("ul");
+                    groupedPoems[letter].forEach(ci_pai => {
+                        const poemItem = document.createElement("li");
+                        poemItem.textContent = ci_pai;
+                        poemList.appendChild(poemItem);
+                    });
+                    groupContainer.appendChild(poemList);
+
+                    poemsListContainer.appendChild(groupContainer);
+                }
+                function groupByFirstLetter(arr, pinyin) {
+                    const groupedPoems = {};
+                    arr.forEach(item => {
+                        let firstLetter = pinyin.getCharactorFirstPinYinWord(item) || '#';
+                        if(typeof firstLetter==='string'){
+                            firstLetter = firstLetter.toUpperCase();
+                        }
+                        if (!groupedPoems[firstLetter]) {
+                            groupedPoems[firstLetter] = [];
+                        }
+                        groupedPoems[firstLetter].push(item);
+                    });
+                    return groupedPoems;
+                }
+            })
+            .catch(err => console.error("数据加载失败", err));
+    };
+</script>
+</html>
