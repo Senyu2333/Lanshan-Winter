@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>墨客集萃</title>
+    <link rel="stylesheet" href="decorate.css">
+</head>
+<body>
+<header class="Main">
+    <span id="MainPage">森雨阁</span>
+    <span>
+        <span id="AddPoems">诗韵新录</span>
+        <span id="PoetsList" style="background-color:rgba(218,218,218,0.5)">墨客集萃</span>
+        <span id="PoemsList">词牌雅谱</span>
+        <span id="SuggestPage">诗海拾贝</span>
+        <span id="MyCollections">藏诗小筑</span>
+        <input type="search" placeholder="查找诗人、诗词、名句...">
+    </span>
+</header>
+<hr>
+
+<div>
+    <main id="poetsListContainer">
+
+    </main>
+</div>
+
+<hr>
+
+<footer id="poetsList-footer">
+    <h4>"此间尽收李杜文章、苏辛意气，墨痕犹带魏晋烟霞，展卷如对先贤论道。"</h4>
+</footer>
+
+<script>
+    window.onload = function () {
+        fetch("poems.json")
+            .then(response => {
+                if (!response.ok) throw new Error("网络错误：" + response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("加载的诗人数据：", data);
+                const poetsListContainer = document.getElementById("poetsListContainer");
+                const Poets = new Set();
+                data.forEach(item => Poets.add(item.author.trim()));
+                const sortedPoets = Array.from(Poets).sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
+                const groupedPoets = { "#": [] };
+                sortedPoets.forEach(author => {
+                    if (author === "佚名") {
+                        groupedPoets["#"].push(author);
+                    } else {
+                        const firstLetter = getFirstLetter(author);
+                        if (!groupedPoets[firstLetter]) {
+                            groupedPoets[firstLetter] = [];
+                        }
+                        groupedPoets[firstLetter].push(author);
+                    }
+                });
+                for (const letter in groupedPoets) {
+                    const groupContainer = document.createElement("div");
+                    groupContainer.classList.add("group-container");
+                    const groupTitle = document.createElement("h3");
+                    groupTitle.textContent = letter;
+                    groupContainer.appendChild(groupTitle);
+                    const poetList = document.createElement("ul");
+                    groupedPoets[letter].forEach(author => {
+                        const poetItem = document.createElement("li");
+                        poetItem.addEventListener("click", function(){
+                           poetPoemsDetail(author);
+                        });
+                        poetItem.textContent = author;
+                        poetList.appendChild(poetItem);
+                    });
+                    groupContainer.appendChild(poetList);
+                    poetsListContainer.appendChild(groupContainer);
+                }
+            })
+            .catch(err => console.error("数据加载失败", err));
+        function getFirstLetter(name) {
+            if (!name || name.length === 0) return "#";
+            const firstChar = name.charAt(0);
+            for (const key in surnameMap) {
+                if (surnameMap[key].includes(firstChar)) {
+                    return key;
+                }
+            }
+            return "#";
+        }
+    };
+            const surnameMap = {
+                'A': "敖艾安奥阿霭",
+                'B': "白柏巴毕卞包鲍贲薄卜步贝北暴逯陂邴",
+                'C': "蔡曹岑昌常车陈成程池仇崔苍晁巢柴储楚丛爨",
+                'D': "单党邓狄刁丁东董窦杜戴代澹台刀到道德邸典点电雕吊仃顶鼎东冬懂冻栋侗读堵肚度端段断对顿",
+                'E': "鄂恩额恶饿娥婀讹峨俄鹅蛾哦谔噩鳄遏颚",
+                'F': "房范方费冯符伏傅法帆藩樊繁凡贩防妨仿访纺放非飞肥匪诽斐分芬纷坟焚粉奋愤粪丰封枫蜂锋风疯逢缝讽凤奉佛否夫肤孵敷甫辅俯釜斧脯腑府腐父付负富缚馥腹覆",
+                'G': "甘高葛耿宫龚巩贡古关管郭顾干杆柑竿肝赶感赣冈刚钢缸肛纲岗港杠皋膏羔糕搞镐稿告戈革隔嗝膈个各给根跟耕庚羹埂梗哽汞拱购够垢估咕姑孤沽菇箍股鼓固故雇冠棺观倌馆罐贯惯灌鹳光广逛归规硅龟皈诡轨鬼癸桂贵柜跪辊滚国果裹过",
+                'H': "韩何贺赫衡洪侯胡华黄霍皇哈孩海亥害酣憨邯含涵寒函喊罕汉汗悍焊憾撼翰瀚杭航壕嚎昊浩和赫黑衡弘闳洪鸿侯后呼延胡狐壶斛虎琥互扈滑化桦怀淮槐徊桓寰缓幻宦焕浣荒慌黄遑湟煌晃幌灰挥辉徽回茴悔毁惠慧晦贿秽会烩霍豁",
+                'J': "吉纪贾简焦金靳荆景蒋姜嵇汲籍冀暨夹郏荚伽佳家嘉甲贾假稼兼蒹菅翦蹇皎江姜将蒋降焦教揭接节杰诘解介界戒藉金今斤筋襟紧锦谨仅进晋禁京泾经荆晶旌精井警敬靖竟净境镜炯窘纠究赳鸠九久灸韭酒旧臼咎就鞠拘驹菊橘举沮咀矩巨具俱剧惧炬踞聚眷隽",
+                'K': "康柯孔寇邝堪勘坎侃看康亢伉闶尻柯科轲棵稞磕蝌可渴克刻客恪肯啃垦恳坑铿空孔恐控抠口扣寇蔻枯哭窟苦库裤酷夸垮挎胯跨蒯快筷侩宽款匡筐狂邝况贶亏岿盔窥奎睽夔傀匮馈溃坤昆坤髡锟鲲困",
+                'L': "蓝郎劳雷冷黎李连廉梁林凌刘卢陆路罗骆吕赖兰岚澜阑蓝篮斓览揽缆榄懒烂滥郎狼廊榔螂朗浪捞劳牢痨老佬姥酪勒乐雷镭垒磊儡累类泪棱楞冷厘梨犁黎篱狸离骊梨澧醴理里俚鲤礼李荔栎砾历厉立丽励利例戾隶力荔粒沥笠栗溧廉涟莲联怜帘敛脸链良凉梁粮量两亮谅撩聊僚寥辽疗燎潦了钌廖料列裂咧冽烈猎琳林磷霖临邻鳞麟凛吝赁拎玲凌陵菱零龄铃伶灵岭领另溜刘琉榴馏留流柳六龙隆垄拢陇楼娄搂篓漏卢芦庐炉泸掳卤虏鲁麓碌禄路鹭露潞陆戮绿律率滤履吕侣旅屡缕虑闾榈吕铝侣捋孪滦卵乱掠略抡轮伦沦纶论罗萝逻锣箩骡螺裸落洛骆络",
+                'M': "马毛茅梅孟糜米苗闵缪麻玛码蚂骂嘛埋霾买麦卖迈脉蛮瞒馒蛮满蔓慢漫芒忙盲氓茫蟒猫茅锚毛铆茂冒帽貌贸么玫枚眉媒煤霉糜梅嵋湄楣镁每美昧寐妹媚门闷蒙盟萌檬勐猛梦孟眯弥迷谜猕米泌秘觅幂谧绵眠绵缅邈妙蔑灭民敏名明鸣冥铭酩命谬摸摹模膜磨摩魔抹末沫莫漠寞墨默磨貊谋牟侔眸谋某牡亩沐慕暮募睦穆",
+                'N': "倪年宁牛聂南欧那呐纳捺乃奶奈耐男楠囡难囊挠恼瑙闹淖馁内嫩能尼泥霓倪鲵拟你匿腻逆溺蔫拈年念娘酿鸟袅尿捏聂啮镊颞蹑孽宁拧咛狞凝泞牛扭纽钮农浓脓弄奴努弩怒女钕虐疟挪傩诺喏糯",
+                'O': "欧阳",
+                'P': "裴彭皮濮蒲潘趴啪爬帕怕拍排牌徘湃派攀潘盘磐盼判叛畔乓庞逄旁耪胖抛泡炮跑呸胚培赔陪配沛佩喷盆砰抨烹澎彭蓬篷硼鹏捧碰丕邳批披劈毗琵疲皮脾匹痞僻屁篇偏翩谝骈片漂缥飘瓢票撇瞥拼姘贫频品聘乒坪苹萍平凭瓶屏坡泼颇婆破迫珀粕剖扑铺仆莆菩蒲璞濮圃浦普谱蹼瀑曝",
+                'Q': "戚钱乔秦丘邱仇曲全屈权祁齐岐奇祈祁骑琪棋旗乞企启绮稽岂杞起气迄弃泣掐恰千仟阡迁签谦骞乾黔浅谴堑嵌欠歉枪呛腔羌强墙蔷嫱抢襁悄敲锹瞧巧鞘撬翘憔桥瞧巧窍切茄且怯窃锲钦侵亲秦琴禽勤寝沁青轻倾卿清晴情顷请庆琼穷穹丘秋蚯鳅囚酋求逑赇裘仇糗区曲岖驱屈渠取娶去觑趣",
+                'R': "任容芮阮冉染壤嚷壤攘嚷让饶娆扰绕惹热壬仁人忍韧认刃仞饪妊葚日戎茸荣绒融冗柔揉蹂肉如茹儒孺乳辱入褥",
+                'S': "沙上邵佘沈盛施石时司宋苏孙史萨腮塞赛三叁伞散桑丧搔骚扫嫂瑟色涩森僧莎痧鲨砂傻煞筛晒山杉珊舢闪陕讪扇缮擅赡伤商赏晌上尚裳梢稍烧芍勺韶少绍奢赊舌蛇舍设摄慑涉社赦申伸身深绅神沈审婶甚肾慎渗升生声牲甥绳省盛剩胜湿狮施诗虱十什石识实拾食蚀史矢使始驶屎示世仕市式势试视饰室是适释氏誓逝嗜噬螫匙殖氏贳恃逝释谥弑收手首守寿受授瘦书叔淑疏舒输孰赎属鼠署蜀黍墅漱戍树竖庶数恕刷耍衰摔甩帅率栓拴涮霜双爽谁水睡税吮瞬说硕朔烁斯撕嘶思私司丝死肆寺嗣俟祀姒松淞嵩怂耸悚讼颂诵搜嗖馊溲艘叟擞薮嗽苏酥俗素速粟僳塑溯宿肃酸蒜算虽随隋髓碎岁穗遂隧祟孙荪狲损笋榫挲娑缩琐索唢锁",
+                'T': "谭汤唐陶田童涂佟踏挞嗒沓榻蹋胎苔抬台泰酞太态汰坍摊贪瘫滩坛檀痰潭谭谈毯袒碳探汤耥趟淌躺烫掏涛滔韬绦萄桃逃陶讨套忑忒疼腾誊藤剔踢锑提啼蹄体替嚏天添田填舔掭挑条迢苕调贴铁帖厅听烃汀廷亭庭蜓停挺艇通痛偷投透凸秃突图徒途涂屠土吐兔湍团推颓腿退蜕吞屯囤臀拖托脱鸵驮妥唾",
+                'W': "万汪王危韦卫魏温闻文武邬吴挖哇洼蛙娃瓦袜歪崴外弯湾蜿豌丸纨完玩碗皖惋宛婉晚万蔓汪亡王网往枉旺望危威微薇巍韦违围唯惟维苇萎委娓诿痿卫未位味畏胃喂猬蔚慰魏温瘟蚊文纹闻刎紊稳问瓮挝蜗涡窝我倭涡斡卧握沃肟巫呜钨乌污诬屋无毋芜吾吴捂午伍五舞武侮捂物勿务悟雾戊兀阢",
+                'X': "席夏鲜萧谢邢熊许薛辛向奚嵇习席袭媳兮西吸锡牺稀息悉晰犀熙嘻膝夕汐矽析皙熹羲禧细隙瞎虾匣侠峡狭暇霞辖暇下吓仙先鲜暹掀锨氙闲贤弦咸衔嫌显险现献乡相香厢湘详翔享响饷想向项巷象像萧硝霄萧淆晓小孝校肖啸笑些歇蝎鞋协胁斜谐携写血雪穴学噱削靴薛穴勋熏薰寻巡询荀询循驯训讯迅",
+                'Y': "严阎颜杨羊姚叶殷尤游于余俞虞尹元岳鄢燕晏阎颜炎沿研盐衍演艳堰燕厌砚雁唁彦央殃秧扬杨佯疡羊洋阳仰养氧样漾邀腰妖邀摇尧遥姚谣窑谣杳咬舀药要耀椰噎耶爷揶野业页邺噎壹揖仪夷沂宜怡贻移遗疑沂倚椅蚁矣以苡已乙艺忆义亿亦屹异抑邑役译易驿益溢诣意裔毅臆翼因阴音殷吟银淫寅饮尹引隐印英婴鹰应缨莹萤营萦赢影颖硬哟拥佣臃痈庸雍永泳咏俑勇用幽悠忧尤由邮油铀犹疣游酉有友右又幼迂淤于余盂鱼渔娱隅予语禹羽雨宇屿峪驭芋吁喻愈欲狱誉毓鹆豫熨袁元员圆援辕原源缘远苑怨曰约越跃钥岳粤樾云郧匀允陨运蕴韵晕耘",
+                'Z': "曾翟詹张章赵甄郑钟周朱祝庄祖戴臧乍诈摘斋宅窄债寨瞻毡詹谵沾粘盏斩辗崭展占战站湛绽章彰樟长涨掌丈仗帐账胀瘴招昭着朝钊迢爪找沼兆肇召诏遮折哲蛰辙者锗褶这浙珍真砧臻斟针侦枕疹诊阵圳振朕赈震镇争征怔峥狰蒸整正证诤郑政之芝枝知肢脂蜘执直值职植殖止址趾旨指纸志痣挚掷至致秩稚质炙治峙痔滞置雉中忠终钟衷肿种重仲众舟周州洲粥轴肘帚咒皱宙昼骤朱侏诛茱铢蛛珠竹逐烛主煮拄瞩嘱贮铸筑住注祝驻抓爪拽专砖转传赚撰篆桩庄装妆撞壮状椎锥追赘坠缀谆准拙捉桌卓琢茁酌浊镯着灼酌斫兹滋淄孜紫仔籽滓子自字渍宗综棕踪鬃总纵邹走奏揍租足卒族祖诅阻组钻纂尊遵昨左佐柞唑"
+            };
+            function poetPoemsDetail(author){
+                const poetUrl=`poetPoems.html?author=${author}`;
+                window.location.href = poetUrl;
+            }
+</script>
+<script src="code.js"></script>
+</body>
+</html>
