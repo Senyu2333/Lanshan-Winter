@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>墨客集萃</title>
+    <link rel="stylesheet" href="decorate.css">
+    <script src="PinYinOrder.bund.js"></script>
+    <link href="//unpkg.com/layui@2.10.0/dist/css/layui.css" rel="stylesheet">
+    <script src="//unpkg.com/layui@2.10.0/dist/layui.js"></script>
+</head>
+<body>
+<header class="Main">
+    <span id="MainPage">森雨阁</span>
+    <span>
+        <span id="AllPoems">琼章雅集</span>
+        <span id="AddPoems">诗韵新录</span>
+        <span id="PoetsList" style="background-color:rgba(218,218,218,0.5)">墨客集萃</span>
+        <span id="PoemsList">词牌雅谱</span>
+        <span id="SuggestPage">诗海拾贝</span>
+        <span id="MyCollections">藏诗小筑</span>
+        <input type="search" placeholder="查找诗人、诗词、名句...">
+    </span>
+</header>
+<hr>
+
+<div>
+    <main id="poetsListContainer">
+
+    </main>
+</div>
+
+<hr>
+
+<footer id="poetsList-footer">
+    <h4>"此间尽收李杜文章、苏辛意气，墨痕犹带魏晋烟霞，展卷如对先贤论道。"</h4>
+</footer>
+
+<script>
+    window.onload = function () {
+        const pinyin = new PinYinOrder();
+        fetch("poems.json")
+            .then(response => {
+                if (!response.ok) throw new Error("网络错误：" + response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("加载的诗人数据：", data);
+                const poetsListContainer = document.getElementById("poetsListContainer");
+                const Poets = new Set();
+                data.forEach(item => Poets.add(item.author.trim()));
+                let sortedPoets = Array.from(Poets);
+                pinyin.sort(sortedPoets);
+                const groupedPoets = groupByFirstLetter(sortedPoets, pinyin);
+                for (const letter in groupedPoets) {
+                    const groupContainer = document.createElement("div");
+                    groupContainer.classList.add("group-container");
+                    const groupTitle = document.createElement("h3");
+                    groupTitle.textContent = letter;
+                    groupContainer.appendChild(groupTitle);
+                    const poetList = document.createElement("ul");
+                    groupedPoets[letter].forEach(author => {
+                        const poetItem = document.createElement("li");
+                        poetItem.addEventListener("click", function () {
+                            poetPoemsDetail(author);
+                        });
+                        poetItem.textContent = author;
+                        poetList.appendChild(poetItem);
+                    });
+                    groupContainer.appendChild(poetList);
+                    poetsListContainer.appendChild(groupContainer);
+                }
+            })
+            .catch(err => console.error("数据加载失败", err));
+
+        function groupByFirstLetter(arr, pinyin) {
+            const groupedPoets = {};
+            arr.forEach(item => {
+                let firstLetter = pinyin.getCharactorFirstPinYinWord(item) || '#';
+                if (typeof firstLetter === 'string') {
+                    firstLetter = firstLetter.toUpperCase();
+                }
+                if (!groupedPoets[firstLetter]) {
+                    groupedPoets[firstLetter] = [];
+                }
+                groupedPoets[firstLetter].push(item);
+            });
+            return groupedPoets;
+        }
+    };
+
+    function poetPoemsDetail(author) {
+        const poetUrl = `poetPoems.html?author=${author}`;
+        window.location.href = poetUrl;
+    }
+</script>
+<script src="code.js"></script>
+</body>
+</html>

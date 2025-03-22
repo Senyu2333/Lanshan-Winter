@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>森雨阁</title>
+    <link rel="stylesheet" href="decorate.css">
+    <link href="//unpkg.com/layui@2.10.0/dist/css/layui.css" rel="stylesheet">
+    <script src="//unpkg.com/layui@2.10.0/dist/layui.js"></script>
+</head>
+
+<body>
+<header class="Main">
+    <span id="MainPage" style="background-color:rgba(218,218,218,0.5)">森雨阁</span>
+    <span>
+        <span id="AllPoems">琼章雅集</span>
+        <span id="AddPoems">诗韵新录</span>
+        <span id="PoetsList">墨客集萃</span>
+        <span id="PoemsList">词牌雅谱</span>
+        <span id="SuggestPage">诗海拾贝</span>
+        <span id="MyCollections">藏诗小筑</span>
+        <input type="search" placeholder="查找诗人、诗词、名句...">
+    </span>
+</header>
+<hr>
+
+<main id="mainPage-main">
+    <div>
+        <h1 id="nowWeekdays"></h1>
+    </div>
+    <div id="mainPageAllPoems-container">
+        <h1 id="allPoems">诗库总览</h1>
+        <p >层架叠珍，尽纳千年诗骨词魂；<br>一目穷览，遍收万古风神韵致。<br>于此间，可探李杜豪雄之句，寻苏辛逸兴之章。<br>漫溯诗河浩浩，尽揽文苑琳琅万象。</p>
+        <p id="poemsCount" style="color: rgba(75,75,75,0.5)"></p>
+    </div>
+</main>
+<hr>
+<footer id="mainPage-footer">
+    <h4>"松涛漱玉鸣诗骨，竹露烹茶煮月魂。"</h4>
+</footer>
+</body>
+
+<script src="code.js"></script>
+<script>
+    function weekDay(){
+        const date=new Date();
+        const weekday=new Array(7);
+        weekday[0]="周日";
+        weekday[1]="周一";
+        weekday[2]="周二";
+        weekday[3]="周三";
+        weekday[4]="周四";
+        weekday[5]="周五";
+        weekday[6]="周六";
+        const nowDate=document.getElementById("nowWeekdays");
+        nowDate.innerHTML=weekday[date.getDay()];
+    }
+    weekDay();
+    fetch("poems.json")
+    .then(response => response.json())
+    .then(data => {
+        const poemsCount=data.length;
+        const allPoemsCount=document.getElementById("poemsCount");
+        allPoemsCount.textContent=`共收录诗词${poemsCount}首`;
+
+    })
+</script>
+
+
+
+</html>
