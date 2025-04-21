@@ -1,4 +1,7 @@
 const fs=require("fs");
-fs.readFile('poems.json','utf8',function(err,data){
-    console.log(data);
-})
+const express=require("express")
+const path=require("path")
+const bodyParser=require("body-parser")
+const app=express()
+const port=63342
+
