@@ -33,6 +33,7 @@
     const poemUrl=new URLSearchParams(window.location.search);
     const poemTitle=decodeURIComponent(poemUrl.get("title"));
     const poemAuthor=decodeURIComponent(poemUrl.get("author"));
+    const poemDynasty=decodeURIComponent(poemUrl.get("dynasty"));
     fetch("poems.json")
     .then(response => response.json())
     .then(data => {
@@ -42,7 +43,7 @@
             poemDetail.innerHTML=`
             <div id="detail">
             <h1 id="detail-title">${detail.title}</h1>
-            <h2 id="detail-author">${detail.author}</h2>
+            <h2 id="detail-author">${detail.author} 【${detail.dynasty}】</h2>
             <p>${detail.content.replace(/。/g, "。<br>").replace(/？/g,"？<br>").replace(/！/g,"！<br>").replace(/；/g,"；<br>").replace(/：/g,"：<br>")}</p>
             <i class="layui-icon layui-icon-list" onclick="copyText('${detail.content.replace(/'/g, "\\'")}')" style="cursor: pointer;"></i>
             <i class="layui-icon layui-icon-heart" id="heartIcon" style="cursor: pointer"></i>

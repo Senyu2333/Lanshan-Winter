@@ -2,6 +2,7 @@ const fs=require("fs");
 const express=require("express")
 const path=require("path")
 const bodyParser=require("body-parser")
+const cors=require("cors")
 const app=express()
 const port=3000
 app.use(cors({
@@ -18,7 +19,7 @@ app.get('/poems', (req, res) => {
 });
 app.post('/poems', (req, res) => {
     const {author,title,time,content,ci_pai,interpretations}=req.body;
-    if(!author || !title || !content || !time || !interpretations ){
+    if(!author || !title || !content || !dynasty || !translation ){
         return res.status(400).json({message:"请完善诗词信息"});
     }
     fs.readFile(poemPath,'utf8', (err, data) => {
@@ -30,10 +31,10 @@ app.post('/poems', (req, res) => {
     const newPoem={
         author,
         title,
-        time,
+        dynasty,
         content,
         ci_pai,
-        interpretations
+        translation
     }
     poemsArray.push(newPoem);
     fs.writeFile(poemPath,JSON.stringify(poemsArray,null,2),'utf-8',(err)=>{
