@@ -6,7 +6,7 @@ const cors=require("cors")
 const app=express()
 const port=3000
 app.use(cors({
-    origin: 'http://localhost:63342'
+    origin: '*'
 }))
 app.use(bodyParser.json())
 const poemPath=path.join(__dirname,'poems.json')
@@ -18,7 +18,7 @@ app.get('/poems', (req, res) => {
     });
 });
 app.post('/poems', (req, res) => {
-    const {author,title,time,content,ci_pai,interpretations}=req.body;
+    const {author,title,dynasty,content,ci_pai,translation}=req.body;
     if(!author || !title || !content || !dynasty || !translation ){
         return res.status(400).json({message:"请完善诗词信息"});
     }
@@ -26,24 +26,25 @@ app.post('/poems', (req, res) => {
         if (err) {
             return res.status(500).json({message:'读取失败'});
         }
-    })
-    const poemsArray=JSON.parse(data);
-    const newPoem={
-        author,
-        title,
-        dynasty,
-        content,
-        ci_pai,
-        translation
-    }
-    poemsArray.push(newPoem);
-    fs.writeFile(poemPath,JSON.stringify(poemsArray,null,2),'utf-8',(err)=>{
-        if(err){
-            return res.status(500).json({message:'保存诗词失败'})
+        const poemsArray=JSON.parse(data);
+        const newPoem={
+            author,
+            title,
+            dynasty,
+            content,
+            ci_pai,
+            translation
         }
-        res.status(200).json({message:"诗词上传成功",poem:newPoem});
+        poemsArray.push(newPoem);
+        fs.writeFile(poemPath,JSON.stringify(poemsArray,null,2),'utf-8',(err)=>{
+            if(err){
+                return res.status(500).json({message:'保存诗词失败'})
+            }
+            res.status(200).json({message:"诗词上传成功",poem:newPoem});
+        })
     })
-})
+    })
+
 app.listen(port, ()=>{
     console.log(`Server started on port ${port}`)
 })

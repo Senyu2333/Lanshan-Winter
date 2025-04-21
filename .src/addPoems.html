@@ -45,11 +45,11 @@
             </div>
             <div id="poemsAdd" class="addPoems-main">
                 <label><strong>内容：</strong></label>
-                <textarea></textarea>
+                <textarea id="ipContent"></textarea>
             </div>
             <div id="interpretationsAdd" class="addPoems-main">
                 <label><strong>译文：</strong></label>
-                <textarea></textarea>
+                <textarea id="ipTranslation"></textarea>
             </div>
             <div id="addPoems-button" class="addPoems-main">
                 <button>提交</button>
@@ -69,22 +69,22 @@
     function savePoems(event){
         event.preventDefault();
         const author = document.getElementById('ipAuthor').value;
-        const time = document.getElementById('ipTime').value;
+        const dynasty = document.getElementById('ipDynasty').value;
         const title = document.getElementById('ipTitle').value;
         const ci_pai = document.getElementById('ipCi_pai').value;
-        const poems = document.getElementById('ipPoems').value;
-        const interpretations = document.getElementById('ipInterpretations').value;
+        const content = document.getElementById('ipContent').value;
+        const interpretations = document.getElementById('ipTranslation').value;
     }
     const tempPoems={
         author:author,
-        time:time,
+        dynasty:dynasty,
         title:title,
         ci_pai:ci_pai,
-        poems:poems,
-        interpretations:interpretations,
+        content:content,
+        translation:translation,
     }
 
-    fetch('http://127.0.0.1:8080/addPoems', {
+    fetch('http://localhost:3000/poems', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
