@@ -26,14 +26,14 @@
 <main>
     <div id="addPoems-box">
         <h1>诗韵新录</h1>
-        <form>
+        <form id="addPoems-form">
             <div id="poetsAdd" class="addPoems-main">
                 <label><strong>作者：</strong></label>
                 <input type="text" id="ipAuthor">
             </div>
-            <div id="timeAdd" class="addPoems-main">
+            <div id="dynastyAdd" class="addPoems-main">
                 <label><strong>朝代：</strong></label>
-                <input type="text" id="ipTime">
+                <input type="text" id="ipDynasty">
             </div>
             <div id="titleAdd" class="addPoems-main">
                 <label><strong>标题：</strong></label>
@@ -52,7 +52,7 @@
                 <textarea id="ipTranslation"></textarea>
             </div>
             <div id="addPoems-button" class="addPoems-main">
-                <button>提交</button>
+                <button type="submit">提交</button>
             </div>
         </form>
     </div>
@@ -66,6 +66,10 @@
 </body>
 <script src="code.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        document.getElementById('addPoems-form')
+            .addEventListener('submit', savePoems);
+    });
     function savePoems(event){
         event.preventDefault();
         const author = document.getElementById('ipAuthor').value;
@@ -73,31 +77,33 @@
         const title = document.getElementById('ipTitle').value;
         const ci_pai = document.getElementById('ipCi_pai').value;
         const content = document.getElementById('ipContent').value;
-        const interpretations = document.getElementById('ipTranslation').value;
-    }
-    const tempPoems={
-        author:author,
-        dynasty:dynasty,
-        title:title,
-        ci_pai:ci_pai,
-        content:content,
-        translation:translation,
+        const translation = document.getElementById('ipTranslation').value;
+        const tempPoems={
+            author:author,
+            dynasty:dynasty,
+            title:title,
+            ci_pai:ci_pai,
+            content:content,
+            translation:translation,
+        };
+        fetch('http://localhost:3000/poems', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(tempPoems)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("上传成功")
+                console.log(data)
+            })
+            .catch(error => console.log(error))
+
     }
 
-    fetch('http://localhost:3000/poems', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(poemData)
-    })
-        .then(response => response.json())
-        .then(data => {
-            alert("上传成功")
-            console.log(data)
-        })
-        .catch(error => console.log(error))
-    document.querySelector('#AddPoems-button').addEventListener('click',savePoems);
+
+
 
 
 </script>
