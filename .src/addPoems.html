@@ -66,7 +66,8 @@
 </body>
 <script src="code.js"></script>
 <script>
-    function savePoems(){
+    function savePoems(event){
+        event.preventDefault();
         const author = document.getElementById('ipAuthor').value;
         const time = document.getElementById('ipTime').value;
         const title = document.getElementById('ipTitle').value;
@@ -82,6 +83,22 @@
         poems:poems,
         interpretations:interpretations,
     }
-    localStorage.setItem('poems',JSON.stringify(tempPoems))
+
+    fetch('http://127.0.0.1:8080/addPoems', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(poemData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert("上传成功")
+            console.log(data)
+        })
+        .catch(error => console.log(error))
+    document.querySelector('#AddPoems-button').addEventListener('click',savePoems);
+
+
 </script>
 </html>
