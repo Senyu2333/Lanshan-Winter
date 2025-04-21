@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>诗韵新录</title>
     <link rel="stylesheet" href="decorate.css">
+    <link href="//unpkg.com/layui@2.10.1/dist/css/layui.css" rel="stylesheet">
+    <script src="//unpkg.com/layui@2.10.1/dist/layui.js"></script>
 </head>
 <body>
 <header class="Main">
     <span id="MainPage">森雨阁</span>
     <span>
+        <span id="AllPoems">琼章雅集</span>
         <span id="AddPoems" style="background-color:rgba(218,218,218,0.5)">诗韵新录</span>
         <span id="PoetsList">墨客集萃</span>
         <span id="PoemsList">词牌雅谱</span>
@@ -25,23 +28,27 @@
         <h1>诗韵新录</h1>
         <form>
             <div id="poetsAdd" class="addPoems-main">
-                <label>作者：</label>
-                <input type="text">
+                <label><strong>作者：</strong></label>
+                <input type="text" id="ipAuthor">
+            </div>
+            <div id="timeAdd" class="addPoems-main">
+                <label><strong>朝代：</strong></label>
+                <input type="text" id="ipTime">
             </div>
             <div id="titleAdd" class="addPoems-main">
-                <label>标题：</label>
-                <input type="text">
+                <label><strong>标题：</strong></label>
+                <input type="text" id="ipTitle">
             </div>
             <div id="ci_paiAdd" class="addPoems-main">
-                <label>词牌：</label>
-                <input type="text">
+                <label><strong>词牌：</strong></label>
+                <input type="text" id="ipCi_pai" placeholder="若没有则不填">
             </div>
             <div id="poemsAdd" class="addPoems-main">
-                <label>内容：</label>
+                <label><strong>内容：</strong></label>
                 <textarea></textarea>
             </div>
             <div id="interpretationsAdd" class="addPoems-main">
-                <label>译文：</label>
+                <label><strong>译文：</strong></label>
                 <textarea></textarea>
             </div>
             <div id="addPoems-button" class="addPoems-main">
@@ -58,4 +65,23 @@
 </footer>
 </body>
 <script src="code.js"></script>
+<script>
+    function savePoems(){
+        const author = document.getElementById('ipAuthor').value;
+        const time = document.getElementById('ipTime').value;
+        const title = document.getElementById('ipTitle').value;
+        const ci_pai = document.getElementById('ipCi_pai').value;
+        const poems = document.getElementById('ipPoems').value;
+        const interpretations = document.getElementById('ipInterpretations').value;
+    }
+    const tempPoems={
+        author:author,
+        time:time,
+        title:title,
+        ci_pai:ci_pai,
+        poems:poems,
+        interpretations:interpretations,
+    }
+    localStorage.setItem('poems',JSON.stringify(tempPoems))
+</script>
 </html>
