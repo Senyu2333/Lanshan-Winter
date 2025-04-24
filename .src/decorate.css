@@ -298,10 +298,17 @@ ul li:hover {
     margin:30px 300px 10px 300px;
     border:2px solid black;
     border-radius:10px;
+
 }
+#poetPoems-container:hover{
+    color: #007bff;
+    cursor: pointer;
+}
+
 
 #poetName{
     text-align:center;
     color:#19537D;
     font-family: "logo";
+
 }
