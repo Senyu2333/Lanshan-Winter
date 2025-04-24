@@ -17,7 +17,9 @@
         <span id="PoemsList">词牌雅谱</span>
         <span id="SuggestPage">诗海拾贝</span>
         <span id="MyCollections">藏诗小筑</span>
-        <input type="search" placeholder="查找诗人、诗词、名句...">
+        <label>
+<input type="search" placeholder="查找诗人、诗词、名句...">
+</label>
     </span>
 </header>
 <hr>
@@ -38,7 +40,7 @@
         details.forEach(poem=>{
             temp+=`
             <div id="poetPoems-container">
-            <p>${poem.title}</p>
+            <p onclick="poemsDetail('${encodeURIComponent(poem.title)}', '${encodeURIComponent(poem.author)}')">${poem.title}</p>
             </div>
         `});
         poemsDetail.innerHTML=temp;
@@ -51,16 +53,18 @@
         .then(data => {
             const poetsDetail=document.getElementById("detailedPoets");
             const isFound=data.find(poet=>poet.name===poemsAuthor);
-            console.log(isFound);
+
             if (isFound) {
-                let temp = `
+                poetsDetail.innerHTML = `
             <div id="poetDetails-container">
                 <p>${isFound.biography}</p>
             </div>`;
-                poetsDetail.innerHTML = temp;
             } else {
                 poetsDetail.innerHTML = "<p>暂无该诗人的信息</p>";
             }
         })
+    function poemsDetail(title,author){
+        window.location.href=`poemDetail.html?poet=${title}&author=${author}`;
+    }
 </script>
 </html>

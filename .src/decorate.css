@@ -239,13 +239,14 @@ ul li:hover {
     font-family: "logo";
 }
 
+#aboutAuthor-container,
 #mainPageAllPoems-container{
     text-align:center;
     font-family: "logo";
     border: 2px solid black;
     border-radius: 10px;
     padding:30px;
-    width: 500px;
+    width: 600px;
     margin: 30px auto 90px;
     font-size: 20px;
 }

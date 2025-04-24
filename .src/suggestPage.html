@@ -70,8 +70,7 @@
         randomPoems();
     }
     function poemDetail(title, author) {
-        const poemUrl=`poemDetails.html?title=${title}&author=${author}`;
-        window.location.href = poemUrl;
+        window.location.href = `poemDetails.html?title=${title}&author=${author}`;
     }
     window.onload=randomPoems;
 </script>
