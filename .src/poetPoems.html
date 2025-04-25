@@ -24,8 +24,11 @@
 </header>
 <hr>
     <h1 id="poetName"></h1>
-    <div id="detailedPoems"></div>
+    <hr>
     <div id="detailedPoets"></div>
+    <hr>
+    <div id="detailedPoems"></div>
+
 </body>
 <script src="code.js"></script>
 <script>
@@ -53,11 +56,10 @@
         .then(data => {
             const poetsDetail=document.getElementById("detailedPoets");
             const isFound=data.find(poet=>poet.name===poemsAuthor);
-
             if (isFound) {
                 poetsDetail.innerHTML = `
             <div id="poetDetails-container">
-                <p>${isFound.biography}</p>
+                <p>个人简介：${isFound.biography}</p>
             </div>`;
             } else {
                 poetsDetail.innerHTML = "<p>暂无该诗人的信息</p>";
