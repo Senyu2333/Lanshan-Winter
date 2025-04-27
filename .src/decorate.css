@@ -323,3 +323,20 @@ ul li:hover {
     font-family: "logo";
 
 }
+
+/*词牌列表*/
+#poemsCi_pai-container{
+    font-family: "logo";
+    text-align: left;
+    width:auto;
+    padding-left:100px;
+    margin:30px 300px 10px 300px;
+    border:2px solid black;
+    border-radius:10px;
+    
+}
+
+#poemsCi_pai-container:hover{
+    color: #007bff;
+    cursor: pointer;
+}

@@ -41,16 +41,17 @@
         details.forEach(poem=>{
             temp+=`
             <div id="poemsCi_pai-container">
-            <p onclick="poemsDetail('${encodeURIComponent(poem.title)}')">${poem.title}</p>
+            <p onclick="poemsDetail('${encodeURIComponent(poem.title)}','${encodeURIComponent(poem.author)}')">${poem.title}——${poem.author}</p>
             </div>
         `});
         ci_paiDetails.innerHTML=temp;
+        const poemCipai=document.getElementById("detailedCi_pai");
         const poetname = document.getElementById("poetName");
         document.title = poemsTitle;
-        poetname.textContent = poemsTitle;
+        poetname.textContent = poem.author;
     })
-    function poemsDetail(title){
-        window.location.href=`poemDetails.html?title=${title}`;
+    function poemsDetail(title,author){
+        window.location.href=`poemDetails.html?title=${title}&author=${author}`;
     }
 </script>
 </html>
