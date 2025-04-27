@@ -24,7 +24,33 @@
     </span>
 </header>
 <hr>
-
+<div id="detailedCi_pai"></div>
+<div id="poetName"></div>
 </body>
 <script src="code.js"></script>
+<script>
+    const ci_paiUrl=new URLSearchParams(window.location.search);
+    const poemsCi_pai=decodeURIComponent(ci_paiUrl.get("ci_pai"));
+    const poemsTitle=decodeURIComponent(ci_paiUrl.get("poemsTitle"));
+    fetch('poems.json')
+    .then(response => response.json())
+    .then(data=>{
+        const ci_paiDetails=document.getElementById("detailedCi_pai");
+        const details=data.filter(poem=>poem.ci_pai===poemsCi_pai);
+        let temp=``;
+        details.forEach(poem=>{
+            temp+=`
+            <div id="poemsCi_pai-container">
+            <p onclick="poemsDetail('${encodeURIComponent(poem.title)}')">${poem.title}</p>
+            </div>
+        `});
+        ci_paiDetails.innerHTML=temp;
+        const poetname = document.getElementById("poetName");
+        document.title = poemsTitle;
+        poetname.textContent = poemsTitle;
+    })
+    function poemsDetail(title){
+        window.location.href=`poemDetails.html?title=${title}`;
+    }
+</script>
 </html>
