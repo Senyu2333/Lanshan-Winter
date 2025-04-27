@@ -24,6 +24,8 @@
     </span>
 </header>
 <hr>
+<h1 style="text-align: center; color: #19537D; font-family: 'logo';"></h1>
+
 <div id="detailedCi_pai"></div>
 <div id="poetName"></div>
 </body>
@@ -45,9 +47,11 @@
             </div>
         `});
         ci_paiDetails.innerHTML=temp;
+        const cipai=document.querySelector("h1");
+        cipai.textContent=poemsCi_pai;
         const poemCipai=document.getElementById("detailedCi_pai");
         const poetname = document.getElementById("poetName");
-        document.title = poemsTitle;
+        document.title = poemsCi_pai;
         poetname.textContent = poem.author;
     })
     function poemsDetail(title,author){
