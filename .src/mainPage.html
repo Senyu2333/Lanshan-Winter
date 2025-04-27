@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="decorate.css">
     <link href="//unpkg.com/layui@2.10.1/dist/css/layui.css" rel="stylesheet">
     <script src="//unpkg.com/layui@2.10.1/dist/layui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
 </head>
 
 <body>
@@ -35,7 +36,7 @@
         <p >层架叠珍，尽纳千年诗骨词魂；<br>一目穷览，遍收万古风神韵致。<br>于此间，可探李杜豪雄之句，寻苏辛逸兴之章。<br>漫溯诗河浩浩，尽揽文苑琳琅万象。</p>
         <p id="poemsCount" style="color: rgba(75,75,75,0.5)"></p>
     </div>
-
+    <div id="myChart" style="width: 100%; height: 400px;"></div>
     <div id="aboutAuthor-container" >
         <h1 id="aboutAuthor">关于作者：</h1>
         <p>仓库地址：<a href="https://github.com/Senyu2333/Lanshan-Winter" target="_blank">https://github.com/Senyu2333/Lanshan-Winter</a><br>
@@ -71,7 +72,45 @@
         const poemsCount=data.length;
         const allPoemsCount=document.getElementById("poemsCount");
         allPoemsCount.textContent=`共收录诗词${poemsCount}首`;
+        const poemsNumber={};
+        data.forEach(poem => {
+            const author=poem.author;
+            if(author in poemsNumber){
+                poemsNumber[author]++;
+            }else{
+                poemsNumber[author]=1;
+            }
+        });
+        const numbersOfPoems=Object.entries(poemsNumber);
+        numbersOfPoems.sort((a, b) => b[1]-a[1]);
+        const topTenAuthors=numbersOfPoems.slice(0,10);
+        const authors=topTenAuthors.map(([author])=>author);
+        const numbers=topTenAuthors.map(([_,poemsNumbers])=>poemsNumbers);
+        const option={
+            xAxis: {
+                data:authors
+            },
+            yAxis: {
+                type:"value"
+            },
+            title:{
+                text:'本站诗人作品top10',
+                left: 'center',
+                textStyle:{
+                    fontSize:16,
+                    color:'#ffcfef'
+                }
+            },
+            series: [{
+                type:'bar',
+                data:numbers,
+                itemStyle: {
+                    color: '#ffcfef',}
+            }],
 
+        }
+        const myChart = echarts.init(document.getElementById("myChart"));
+        myChart.setOption(option);
     })
 </script>
 
