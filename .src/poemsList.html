@@ -71,7 +71,11 @@
                         const poemItem = document.createElement("li");
                         poemItem.textContent = ci_pai;
                         poemList.appendChild(poemItem);
+                        poemItem.addEventListener("click", function ()  {
+                            ci_paiDetail(ci_pai);
+                        })
                     });
+
                     groupContainer.appendChild(poemList);
 
                     poemsListContainer.appendChild(groupContainer);
@@ -89,6 +93,9 @@
                         groupedPoems[firstLetter].push(item);
                     });
                     return groupedPoems;
+                }
+                function ci_paiDetail(ci_pai){
+                    window.location.href = "poemsCi_pai.html?ci_pai=" + ci_pai;
                 }
             })
             .catch(err => console.error("数据加载失败", err));
