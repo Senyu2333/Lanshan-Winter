@@ -289,6 +289,10 @@ ul li:hover {
     margin-right:300px;
 }
 
+#detail-author:hover{
+    color: #007bff;
+    cursor: pointer;
+}
 /*诗人作品*/
 #poetDetails-container{
     text-align:left;
