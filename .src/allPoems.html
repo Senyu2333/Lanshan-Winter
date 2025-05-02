@@ -18,13 +18,21 @@
         <span id="PoemsList">词牌雅谱</span>
         <span id="SuggestPage">诗海拾贝</span>
         <span id="MyCollections">藏诗小筑</span>
-        <input type="search" placeholder="查找诗人、诗词、名句...">
+        <label>
+<input type="search" placeholder="查找诗人、诗词、名句...">
+</label>
     </span>
 </header>
 <hr>
 </body>
 <script src="code.js"></script>
 <script>
+window.onload = function () {
+    fetch('poems.json')
+    .then(response => response.json())
+    .then(data => {
 
+    })
+}
 </script>
 </html>
